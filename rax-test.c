@@ -28,6 +28,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <endian.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -854,7 +855,7 @@ void benchmark(void) {
         uint64_t tmr = tm;
 
         for (int i = 0; i < 5000000; i++) {
-            if (BYTE_ORDER == LITTLE_ENDIAN) memrev64(&tmr);
+            if (__BYTE_ORDER == __LITTLE_ENDIAN) memrev64(&tmr);
             raxInsert(timers, (uint8_t*)&tmr, 8, data, NULL);
             random_offset = max_offset[j] == 0 ? 0 : rc4rand() % max_offset[j];
             tm = tm + random_offset + 1;
