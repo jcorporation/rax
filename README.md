@@ -135,13 +135,15 @@ by reference.
 
 The lookup function is the following:
 
-    void *raxFind(rax *rax, unsigned char *s, size_t len);
+    int raxFind(rax *rax, unsigned char *s, size_t len, void **value);
 
-This function returns the special value `raxNotFound` if the key you
-are trying to access is not there, so an example usage is the following:
+This function returns 1 if the key was found, else 0.
 
-    void *data = raxFind(rax,mykey,mykey_len);
-    if (data == raxNotFound) return;
+The 'value' pointer is optional, if passed it will be set to the key
+associated value if the function successfully finds the key.
+
+    void *data;
+    if (raxFind(rax,mykey,mykey_len,&data) == 0) return;
     printf("Key value is %p\n", data);
 
 raxFind() is a read only function so no out of memory conditions are
@@ -161,7 +163,7 @@ there is an out of memory condition while a key is being deleted, the
 resulting tree nodes may not get re-compressed even if possible: the radix
 tree may be less efficiently encoded in this case.
 
-The `old` argument is optional, if passed will be set to the key associated
+The `old` argument is optional, if passed it will be set to the key associated
 value if the function successfully finds and removes the key.
 
 # Iterators
